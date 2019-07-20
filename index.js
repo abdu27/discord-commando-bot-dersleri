@@ -37,4 +37,60 @@ client.on('error', err => {
 	console.log(err)
 });
 
+
+client.on("guildMemberAdd", async member => {
+
+  const kontrolet = client.provider.get(member.guild, "girisCikisMesajKontrol")
+
+  if (kontrolet === false || !kontrolet ){
+    const kanal = client.provider.get(member.guild, 'girisCikisKanal');
+    if (!kanal) return;
+
+    member.guild.channels.get(kanal).send(`:inbox_tray: | ${member.toString()} adlı kişi aramıza katıldı!`);
+  } else {
+
+    if (kontrolet === true) {
+
+      const mesaj = client.provider.get(member.guild, "girisMesaj")
+      if (!mesaj) return;
+      const kanal = client.provider.get(member.guild, 'girisCikisKanal');
+      if (!kanal) return;
+
+      mesajj = mesaj.replace(/kullanici/, member.toString())
+
+      member.guild.channels.get(kanal).send(mesajj)
+
+    }
+  }
+
+})
+
+
+client.on("guildMemberRemove", async member => {
+
+  const kontrolet = client.provider.get(member.guild, "girisCikisMesajKontrol")
+
+  if (kontrolet === false || !kontrolet ){
+    const kanal = client.provider.get(member.guild, 'girisCikisKanal');
+    if (!kanal) return;
+
+    member.guild.channels.get(kanal).send(`:outbox_tray: | ${member.toString()} adlı kişi aramızdan ayrıldı!`);
+  } else {
+
+    if (kontrolet === true) {
+
+      const mesaj = client.provider.get(member.guild, "cikisMesaj")
+      if (!mesaj) return;
+      const kanal = client.provider.get(member.guild, 'girisCikisKanal');
+      if (!kanal) return;
+
+      mesajj = mesaj.replace(/kullanici/, member.toString())
+
+      member.guild.channels.get(kanal).send(mesajj)
+
+    }
+  }
+
+})
+
 client.login(ayarlar.TOKEN);
